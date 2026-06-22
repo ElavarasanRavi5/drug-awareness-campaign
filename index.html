@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drug Awareness Campaign</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#e8f5e9,#ffffff);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.card{
+    background:#fff;
+    width:100%;
+    max-width:700px;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+.logo{
+    font-size:60px;
+    margin-bottom:15px;
+}
+
+h1{
+    color:#1565c0;
+    margin-bottom:15px;
+}
+
+.message{
+    font-size:22px;
+    color:#2e7d32;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.subtitle{
+    font-size:18px;
+    margin-bottom:25px;
+    color:#555;
+}
+
+.counter-title{
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+.count{
+    font-size:70px;
+    color:#0d47a1;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.footer{
+    margin-top:20px;
+    color:#666;
+    font-size:16px;
+}
+
+.loading{
+    color:#999;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="logo">🚫💊</div>
+
+<h1>Drug Awareness Campaign</h1>
+
+<div class="message">
+Thank You For Participating
+</div>
+
+<div class="subtitle">
+Let's Build a Drug-Free Society Together
+</div>
+
+<div class="counter-title">
+Students Reached
+</div>
+
+<div class="count" id="count">
+<span class="loading">Loading...</span>
+</div>
+
+<div class="footer">
+Your support helps create a healthier future.
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  runTransaction,
+  onValue
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBmelb-N3AVmM5sgEqmnNVDc1VW3yUVDmM",
+  authDomain: "drug-awareness-campaign.firebaseapp.com",
+  databaseURL: "https://drug-awareness-campaign-default-rtdb.firebaseio.com",
+  projectId: "drug-awareness-campaign",
+  storageBucket: "drug-awareness-campaign.firebasestorage.app",
+  messagingSenderId: "999937495605",
+  appId: "1:999937495605:web:fa3176705e27fe5da1977c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const countRef = ref(db, "count");
+
+if (!localStorage.getItem("drug_campaign_counted")) {
+
+    runTransaction(countRef, (currentValue) => {
+        return (currentValue || 0) + 1;
+    });
+
+    localStorage.setItem("drug_campaign_counted", "yes");
+}
+
+onValue(countRef, (snapshot) => {
+
+    const count = snapshot.val() || 0;
+
+    document.getElementById("count").innerText =
+        count.toLocaleString();
+
+});
+
+</script>
+
+</body>
+</html>
